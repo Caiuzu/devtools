@@ -19,7 +19,7 @@
 <p align="center">  
  <a href="#resumo">Resumo</a> •
  <a href="#-ssh-script-">SSH</a> •  
- <a href="-docker-script-">Docker</a> •  
+ <a href="#-docker-script-">Docker</a> •  
  <a href="#zsh-script-">ZSH</a> •  
  <a href="#sdkman--script-">SDKMAN</a> •  
  <a href="#-utils-script-">utils</a> •  
