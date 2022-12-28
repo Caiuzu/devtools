@@ -18,14 +18,14 @@
 <!-- Indice-->  
 <p align="center">  
  <a href="#resumo">Resumo</a> •
- <a href="#ssh-script">SSH</a> •  
- <a href="docker-script">Docker</a> •  
- <a href="#zsh-script">ZSH</a> •  
- <a href="#sdkman-script">SDKMAN</a> •  
- <a href="#utils-script">utils</a> •  
- <a href="#nvm-script">NVM</a> •  
- <a href="#git-script">GIT</a> •  
- <a href="#vpn-script">VPN</a> •  
+ <a href="#-ssh-script-">SSH</a> •  
+ <a href="-docker-script-">Docker</a> •  
+ <a href="#zsh-script-">ZSH</a> •  
+ <a href="#sdkman--script-">SDKMAN</a> •  
+ <a href="#-utils-script-">utils</a> •  
+ <a href="#nvm-node-version-manager-script-">NVM</a> •  
+ <a href="#git-script-">GIT</a> •  
+ <a href="#vpn-script-">VPN</a> •  
  <a href="#awscli-script">AWSCLI</a> •
  <a href="#como-contribuir">Como Contribuir?</a>  
 </p>  
