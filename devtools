@@ -1,0 +1,330 @@
+
+
+export PATH=$PATH:"$(cd "$(dirname "$0")"; pwd)"
+
+# Define o caminho completo para o diretório atual do script
+BASE_DIR=$(cd "$(dirname "$0")"; pwd)
+
+# Função que exibe a barra de progresso diferenciando entre ZSH e BASH
+show_progress() {
+  # Limpa a linha atual
+  tput cuu 1 && tput el
+
+  if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+    # O shell atual é o zsh
+    # Exibe a barra de progresso
+    printf "["
+    for i in {1..100}; do
+      if [ $i -le $progress ]; then
+        printf "#"
+      else
+        printf " "
+      fi
+    done
+    printf "] %d%%\n" "$progress"
+  fi
+
+  if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+    # O shell atual é o bash
+    # Exibe a barra de progresso
+    printf "["
+    for ((i=0; i<100; i+=2)); do
+      if [ $i -le $progress ]; then
+        printf "#"
+      else
+        printf " "
+      fi
+    done
+    printf "] %d%%\n" "$progress"
+  fi
+
+}
+
+# Verifica o primeiro parâmetro
+case "$1" in
+  "info")
+    # Informações sobre o script
+    echo -e " 
+    ██████╗ ███████╗██╗   ██╗████████╗ ██████╗  ██████╗ ██╗     ███████╗
+    ██╔══██╗██╔════╝██║   ██║╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝
+    ██║  ██║█████╗  ██║   ██║   ██║   ██║   ██║██║   ██║██║     ███████╗
+    ██║  ██║██╔══╝  ╚██╗ ██╔╝   ██║   ██║   ██║██║   ██║██║     ╚════██║
+    ██████╔╝███████╗ ╚████╔╝    ██║   ╚██████╔╝╚██████╔╝███████╗███████║
+    ╚═════╝ ╚══════╝  ╚═══╝     ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
+  Desenvolvido por: Caio Souza | Repo: https://github.com/Caiuzu/devtools"
+    echo ""
+    ;;
+
+  "add")
+    shift
+    case "$1" in
+      "path")
+        # Verifica se o script possui permissão de execução
+        if [ ! -x "$0" ]; then
+          # Adiciona permissão de execução para o script
+          chmod +x "$0"
+        fi
+        # Verifica qual terminal está sendo utilizado
+        if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+          # Verifica se o script já está na PATH
+          if ! which devtool &> /dev/null; then
+            # Adiciona o script na PATH # Recarrega o arquivo de configuração do bash
+            echo "Adicionando o devtool na PATH..."
+            echo "export PATH=\$PATH:$BASE_DIR" >> ~/.bashrc 
+            #source ~/.bashrc
+            echo "Devtool adicionado com sucesso ao seu BASH, reinicie seu terminal :D"
+            echo "Desenvolvido por @Caiuzu com Café."
+          fi
+        elif [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+          # Verifica se o script já está na PATH
+          if ! which devtool &> /dev/null; then
+            # Adiciona o script na PATH # Recarrega o arquivo de configuração do zsh
+            echo "Adicionando o devtool na PATH..."
+            echo "export PATH=\$PATH:$BASE_DIR" >> ~/.zshrc 
+            #source ~/.zshrc
+            echo "Devtool adicionado com sucesso ao seu ZSH, reinicie seu terminal :D"
+            echo "Desenvolvido por @Caiuzu com Café."
+          fi
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o terminal atual não é o bash nem o zsh."
+          exit 1
+        fi
+        ;;
+      esac
+    ;;  
+
+  "uninstall")
+    # Verifica qual terminal está sendo utilizado
+    if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+      # Remove o script da PATH
+      sed -i '/devtool/d' ~/.bashrc
+
+      # Recarrega o arquivo de configuração do bash
+      #source ~/.bashrc
+      echo "Devtool removido com sucesso de seu BASH, reinicie seu terminal :D"
+    elif [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+      # Remove o script da PATH
+      sed -i '/devtool/d' ~/.zshrc
+
+      # Recarrega o arquivo de configuração do zsh
+      #source ~/.zshrc
+      echo "Devtool removido com sucesso de seu ZSH, reinicie seu terminal :D"
+    else
+      # Exibe mensagem de erro
+      echo "Erro: o terminal atual não é o bash nem o zsh."
+      exit 1
+    fi
+    ;;  
+
+  "install")
+    # Verifica o segundo parâmetro
+    case "$2" in
+      "zsh")
+        # Define o caminho completo para o script configure-zsh.sh
+        ZSH_SCRIPT_PATH="$BASE_DIR/src/configure-zsh.sh"
+
+        # Verifica se o arquivo configure-zsh.sh existe
+        if [ -f "$ZSH_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$ZSH_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$ZSH_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-zsh.sh
+          "$ZSH_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $ZSH_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "ssh")
+        # Define o caminho completo para o script configure-ssh.sh
+        SSH_SCRIPT_PATH="$BASE_DIR/src/configure-ssh.sh"
+
+        # Verifica se o arquivo configure-ssh.sh existe
+        if [ -f "$SSH_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$SSH_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$SSH_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-ssh.sh
+          "$SSH_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $SSH_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "sdkman")
+        # Define o caminho completo para o script configure-sdkman.sh
+        SDKMAN_SCRIPT_PATH="$BASE_DIR/src/configure-sdkman.sh"
+
+        # Verifica se o arquivo configure-sdkman.sh existe
+        if [ -f "$SDKMAN_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$SDKMAN_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$SDKMAN_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-sdkman.sh
+          "$SDKMAN_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $SDKMAN_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "utils")
+        # Define o caminho completo para o script configure-linux.sh
+        UTILS_SCRIPT_PATH="$BASE_DIR/src/configure-linux.sh"
+
+        # Verifica se o arquivo configure-linux.sh existe
+        if [ -f "$UTILS_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$UTILS_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$UTILS_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-linux.sh
+          "$UTILS_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $UTILS_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "docker")
+        # Define o caminho completo para o script configure-docker.sh
+        DOCKER_SCRIPT_PATH="$BASE_DIR/src/configure-docker.sh"
+
+        # Verifica se o arquivo configure-docker.sh existe
+        if [ -f "$DOCKER_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$DOCKER_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$DOCKER_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-docker.sh
+          "$DOCKER_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $DOCKER_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+       "git")
+        # Define o caminho completo para o script configure-git.sh
+        GIT_SCRIPT_PATH="$BASE_DIR/src/configure-git.sh"
+
+        # Verifica se o arquivo configure-git.sh existe
+        if [ -f "$GIT_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$GIT_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$GIT_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-git.sh
+          "$GIT_SCRIPT_PATH" "$3" "$4"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $GIT_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "node")
+        # Define o caminho completo para o script configure-node.sh
+        NODE_SCRIPT_PATH="$BASE_DIR/src/configure-node.sh"
+
+        # Verifica se o arquivo configure-node.sh existe
+        if [ -f "$NODE_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$NODE_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$NODE_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-node.sh
+          "$NODE_SCRIPT_PATH" "$5"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $NODE_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "vpn")
+        # Define o caminho completo para o script configure-vpn.sh
+        VPN_SCRIPT_PATH="$BASE_DIR/src/configure-vpn.sh"
+
+        # Verifica se o arquivo configure-vpn.sh existe
+        if [ -f "$VPN_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$VPN_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$VPN_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-vpn.sh
+          "$VPN_SCRIPT_PATH" "$5"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $VPN_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "--all")
+        # Executa todos os scripts em sequência
+
+        # Instala o Zsh
+        bash src/configure-zsh.sh
+        progress=$((progress + 10))
+        show_progress
+
+        # Solicita as variáveis para configuração do Git
+        read -p "Digite o nome do usuário: " user_name
+        read -p "Digite o e-mail do usuário: " user_email
+        #global
+        bash src/configure-git.sh "$user_name" "$user_email"
+        progress=$((progress + 10))
+        show_progress
+
+        # Executa o script de instalação de utilitários
+        bash src/configure-linux.sh
+        progress=$((progress + 10))
+        show_progress
+
+        # Executa o script de instalação do Docker
+        bash src/configure-docker.sh
+        progress=$((progress + 10))
+        show_progress
+
+        # Executa o script de instalação do SDKMAN
+        bash src/configure-sdkman.sh
+        progress=$((progress + 10))
+        show_progress
+
+        # Instala o nvm / Node.js
+        read -p "Digite a versão do Node.js (deixe em branco para instalar a versão mais recente): " node_version
+        bash src/configure-sdkman.sh "$node_version"
+        progress=$((progress + 10))
+        show_progress
+        ;;
+    esac
+    ;;
+esac

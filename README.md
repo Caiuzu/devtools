@@ -1,5 +1,15 @@
 # **DEV-TOOLS**: [_Script de auto instalação e configuração de ferramentas utilizadas no dia-a-dia_]()
 
+ 
+    ██████╗ ███████╗██╗   ██╗████████╗ ██████╗  ██████╗ ██╗     ███████╗
+    ██╔══██╗██╔════╝██║   ██║╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝
+    ██║  ██║█████╗  ██║   ██║   ██║   ██║   ██║██║   ██║██║     ███████╗
+    ██║  ██║██╔══╝  ╚██╗ ██╔╝   ██║   ██║   ██║██║   ██║██║     ╚════██║
+    ██████╔╝███████╗ ╚████╔╝    ██║   ╚██████╔╝╚██████╔╝███████╗███████║
+    ╚═════╝ ╚══════╝  ╚═══╝     ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝.sh
+
+
+
 ---
 
 ###### By: [@caiuzu](https://github.com/Caiuzu/)
@@ -245,3 +255,8 @@ de [commit semântico](https://blog.geekhunter.com.br/o-que-e-commit-e-como-usar
 </details>
 
 ---
+
+TODO:
+[ ] Criar um `devtool --help` que lista todos os comandos
+[ ] No script configure-git.sh em vez de configurar global, permitir selecionar -> bitbuck, github, gitlab ou global
+[ ] Rever o script de docker / docker-compose
