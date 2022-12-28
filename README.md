@@ -35,16 +35,26 @@
 
 
 # RESUMO:
-- Comandos para instalação unitária:
-    ```
-        devtools install ${zsh, ssh, sdkman, utils, docker, git, node, vpn}
-    ```
 
-- Comando para execução e instalação completa de todas as ferramentas:
-    ```
-        devtools install --all
-    ```
+Ao executar o comando abaixo, o script se adicionará na PATH do sistema, permitindo utilizar o comando devtools sem necessidade da execução do arquivo.
 
+```
+    bash devtool.sh
+```
+
+Após a primeira execução e adicionado na PATH, basta utilizar os comandos abaixo:
+
+- Comandos para instalação **unitária** de ferramentas:
+```
+    devtools install ${zsh, ssh, sdkman, utils, docker, git, node, vpn}
+```
+
+- Comando para execução e instalação **completa** de todas as ferramentas:
+```
+    devtools install --all
+```
+
+---
 ---
 
 ## [ SSH script](src/configure-ssh.sh) :
