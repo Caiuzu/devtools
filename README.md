@@ -260,7 +260,9 @@ TODO:
 - [ ] Alterar os parametros mais internos para solicitações no terminal;
 - [ ] Criar um `devtool --help` que lista todos os comandos;
 - [ ] No script configure-git.sh em vez de configurar global, permitir selecionar -> bitbuck, github, gitlab ou global;
+    - [ ] Adicionar no scrip de git o read de solicitar o usuario e email, em vez do parâmetro
 - [ ] Rever o script de docker / docker-compose
+
 
 DONE:
 - [X] Permitir que caso o nvm esteja instalado, ele questione se deseja alterar a versão. Se sim, solicita a versão desejada.
