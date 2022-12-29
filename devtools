@@ -1,4 +1,4 @@
-
+TERMINAL=$(ps -o comm= -p $$)
 
 export PATH=$PATH:"$(cd "$(dirname "$0")"; pwd)"
 
@@ -10,33 +10,17 @@ show_progress() {
   # Limpa a linha atual
   tput cuu 1 && tput el
 
-  if [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
-    # O shell atual é o zsh
-    # Exibe a barra de progresso
-    printf "["
-    for i in {1..100}; do
-      if [ $i -le $progress ]; then
-        printf "#"
-      else
-        printf " "
-      fi
-    done
-    printf "] %d%%\n" "$progress"
-  fi
-
-  if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
-    # O shell atual é o bash
-    # Exibe a barra de progresso
-    printf "["
-    for ((i=0; i<100; i+=2)); do
-      if [ $i -le $progress ]; then
-        printf "#"
-      else
-        printf " "
-      fi
-    done
-    printf "] %d%%\n" "$progress"
-  fi
+  # O shell atual é o zsh
+  # Exibe a barra de progresso
+  printf "["
+  for i in {1..100}; do
+    if [ $i -le $progress ]; then
+      printf "#"
+    else
+      printf " "
+    fi
+  done
+  printf "] %d%%\n" "$progress"
 
 }
 
@@ -44,14 +28,14 @@ show_progress() {
 case "$1" in
   "info")
     # Informações sobre o script
-    echo -e " 
+    echo " 
     ██████╗ ███████╗██╗   ██╗████████╗ ██████╗  ██████╗ ██╗     ███████╗
     ██╔══██╗██╔════╝██║   ██║╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝
     ██║  ██║█████╗  ██║   ██║   ██║   ██║   ██║██║   ██║██║     ███████╗
     ██║  ██║██╔══╝  ╚██╗ ██╔╝   ██║   ██║   ██║██║   ██║██║     ╚════██║
     ██████╔╝███████╗ ╚████╔╝    ██║   ╚██████╔╝╚██████╔╝███████╗███████║
     ╚═════╝ ╚══════╝  ╚═══╝     ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
-  Desenvolvido por: Caio Souza | Repo: https://github.com/Caiuzu/devtools"
+  Desenvolvido por: Caio Souza | Repo: https://github.com/Caiuzu/devtools | $TERMINAL"
     echo ""
     ;;
 
@@ -65,7 +49,7 @@ case "$1" in
           chmod +x "$0"
         fi
         # Verifica qual terminal está sendo utilizado
-        if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+        if [ "$TERMINAL" = "bash" ]; then
           # Verifica se o script já está na PATH
           if ! which devtool &> /dev/null; then
             # Adiciona o script na PATH # Recarrega o arquivo de configuração do bash
@@ -75,7 +59,7 @@ case "$1" in
             echo "Devtool adicionado com sucesso ao seu BASH, reinicie seu terminal :D"
             echo "Desenvolvido por @Caiuzu com Café."
           fi
-        elif [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+        elif [ "$TERMINAL" = "zsh" ] || [ "$TERMINAL" = "sh" ] ; then
           # Verifica se o script já está na PATH
           if ! which devtool &> /dev/null; then
             # Adiciona o script na PATH # Recarrega o arquivo de configuração do zsh
@@ -87,7 +71,7 @@ case "$1" in
           fi
         else
           # Exibe mensagem de erro
-          echo "Erro: o terminal atual não é o bash nem o zsh."
+          echo "Erro: o terminal atual não é o bash nem o zsh, é $TERMINAL."
           exit 1
         fi
         ;;
@@ -96,14 +80,14 @@ case "$1" in
 
   "uninstall")
     # Verifica qual terminal está sendo utilizado
-    if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+    if [ "$TERMINAL" = "bash" ]; then
       # Remove o script da PATH
       sed -i '/devtool/d' ~/.bashrc
 
       # Recarrega o arquivo de configuração do bash
       #source ~/.bashrc
       echo "Devtool removido com sucesso de seu BASH, reinicie seu terminal :D"
-    elif [ "$SHELL" = "/bin/zsh" ] || [ "$SHELL" = "/usr/bin/zsh" ]; then
+    elif [ "$TERMINAL" = "zsh" ] || [ "$TERMINAL" = "sh" ] ; then
       # Remove o script da PATH
       sed -i '/devtool/d' ~/.zshrc
 
@@ -112,7 +96,7 @@ case "$1" in
       echo "Devtool removido com sucesso de seu ZSH, reinicie seu terminal :D"
     else
       # Exibe mensagem de erro
-      echo "Erro: o terminal atual não é o bash nem o zsh."
+      echo "Erro: o terminal atual não é o bash nem o zsh, é $TERMINAL."
       exit 1
     fi
     ;;  
@@ -285,6 +269,27 @@ case "$1" in
         else
           # Exibe mensagem de erro
           echo "Erro: o arquivo $VPN_SCRIPT_PATH não foi encontrado."
+        fi
+        ;;
+
+      "aws")
+        # Define o caminho completo para o script configure-aws.sh
+        AWS_SCRIPT_PATH="$BASE_DIR/src/configure-awscli.sh"
+
+        # Verifica se o arquivo configure-aws.sh existe
+        if [ -f "$AWS_SCRIPT_PATH" ]; then
+
+          # Verifica se o script possui permissão de execução
+          if [ ! -x "$AWS_SCRIPT_PATH" ]; then
+            # Adiciona permissão de execução para o script
+            chmod +x "$AWS_SCRIPT_PATH"
+          fi
+
+          # Executa o script configure-awscli.sh
+          "$AWS_SCRIPT_PATH"
+        else
+          # Exibe mensagem de erro
+          echo "Erro: o arquivo $AWS_SCRIPT_PATH não foi encontrado."
         fi
         ;;
 
